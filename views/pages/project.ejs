@@ -1,0 +1,349 @@
+<div class="card">
+    <h2 class="card-header">Danh sách dự án</h2>
+
+    <div class="p-4">
+        <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#projectModal"
+        >
+            Thêm dự án
+        </button>
+    </div>
+    <div class="table-responsive text-nowrap">
+        <table class="table col-md-8">
+            <caption class="ms-4 text-primary">
+                Freelancer 👦👧🧒
+            </caption>
+            <thead>
+                <tr>
+                    <th>Tên dự án</th>
+                    <th>Khách hàng</th>
+                    <th>Developer</th>
+                    <th>Ngân sách</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                <% data.forEach(function(project) { %>
+                <tr class="table-default">
+                    <td>
+                        <i class="fab fa-sketch fa-lg text-warning me-3"></i>
+                        <strong><%= project.name %></strong>
+                    </td>
+                    <td>CustomerId: <%= project.customer %></td>
+                    <td>
+                        <ul
+                            class="list-unstyled users-list m-0 avatar-group d-flex align-items-center"
+                        >
+                            <li
+                                data-bs-toggle="tooltip"
+                                data-popup="tooltip-custom"
+                                data-bs-placement="top"
+                                class="avatar avatar-xs pull-up"
+                                title="Lilian Fuller"
+                            >
+                                <img
+                                    src="../assets/img/avatars/5.png"
+                                    alt="Avatar"
+                                    class="rounded-circle"
+                                />
+                            </li>
+                            <li
+                                data-bs-toggle="tooltip"
+                                data-popup="tooltip-custom"
+                                data-bs-placement="top"
+                                class="avatar avatar-xs pull-up"
+                                title="Sophia Wilkerson"
+                            >
+                                <img
+                                    src="../assets/img/avatars/6.png"
+                                    alt="Avatar"
+                                    class="rounded-circle"
+                                />
+                            </li>
+                            <li
+                                data-bs-toggle="tooltip"
+                                data-popup="tooltip-custom"
+                                data-bs-placement="top"
+                                class="avatar avatar-xs pull-up"
+                                title="Christina Parker"
+                            >
+                                <img
+                                    src="../assets/img/avatars/7.png"
+                                    alt="Avatar"
+                                    class="rounded-circle"
+                                />
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <%= project.buget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        %> VNĐ
+                    </td>
+                    <td><%= moment(project.startDate).format('L') %></td>
+                    <td><%= moment(project.endDate).format('L') %></td>
+
+                    <td>
+                        <% if(project.status === 'SHEDULED'){ %>
+                        <span class="badge bg-label-primary me-1">Đã lên lịch</span>
+                        <% } %> <% if(project.status === 'RUNNING'){ %>
+                        <span class="badge bg-label-warning me-1">Đang phát triển</span>
+                        <% } %> <% if(project.status === 'PENDING'){ %>
+                        <span class="badge bg-label-dark me-1">Đang chờ</span>
+                        <% } %> <% if(project.status === 'COMPLETED'){ %>
+                        <span class="badge bg-label-success me-1">Đã hoàn thành</span>
+                        <% } %>
+                    </td>
+                    <td>
+                        <button
+                            class="dropdown-item text-success"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#projectModal2"
+                            data-bs-projectname="name"
+                            data-bs-customer="customer"
+                            data-bs-developer="[a,b,c,d]"
+                            data-bs-status="name"
+                            data-bs-id="id"
+                        >
+                            <i class="bx bx-edit-alt me-1"></i> Sửa
+                        </button>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- MODAL  PROJECT -->
+<div class="modal fade" id="projectModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <form action="/add-project" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title text-primary" id="exampleModalLabel4">
+                        Thêm dự án
+                    </h3>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="projectName" class="form-label">Tên Dự Án</label>
+                            <input
+                                required
+                                type="text"
+                                id="projectName"
+                                name="name"
+                                class="form-control"
+                                placeholder="Tên đệm..."
+                            />
+                        </div>
+                        <div class="col mb-3">
+                            <label for="customer" class="form-label"> Khách Hàng</label>
+
+                            <select
+                                required
+                                name="customer"
+                                class="form-select"
+                                id="customer"
+                                aria-label="Default select example"
+                            >
+                                <option selected>Chọn khách hàng</option>
+
+                                <% customers.forEach(function(customer) { %>
+                                <option value="<%= customer.id %>">
+                                    <%= customer.fullName %>
+                                </option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-0">
+                            <label for="startDate" class="form-label">Ngày bắt đầu</label>
+                            <input
+                                required
+                                type="date"
+                                id="startDate"
+                                name="startDate"
+                                class="form-control"
+                                placeholder="Ngày bắt đầu"
+                            />
+                        </div>
+                        <div class="col mb-0">
+                            <label for="endDate" class="form-label">Ngày kết thúc</label>
+                            <input
+                                required
+                                type="date"
+                                id="endDate"
+                                name="endDate"
+                                class="form-control"
+                                placeholder="Ngày kết thúc"
+                            />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col mb-3">
+                            <label for="devs" class="form-label">Devoloper</label>
+                            <div>
+                                <select
+                                    required
+                                    name="devs"
+                                    id="devs"
+                                    class="selectpicker"
+                                    multiple
+                                >
+                                    <% devs.forEach(function(dev) { %>
+                                    <option value="<%= dev.id %>">
+                                        <%= dev.fullName + ' '+'('+ dev.role +')' %>
+                                    </option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col mb-3">
+                            <label for="buget" class="form-label">Ngân sách</label>
+                            <input
+                                required
+                                type="number"
+                                id="buget"
+                                name="buget"
+                                class="form-control"
+                                placeholder="Ngân sách"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Đóng
+                    </button>
+                    <button type="submit" class="btn btn-success">Thêm</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit modal -->
+<div class="modal fade" id="projectModal2" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <form action="/" method="post" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3
+                        class="modal-title edit-title text-primary"
+                        id="exampleModalLabel4"
+                    >
+                        Thêm dự án
+                    </h3>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="projectName" class="form-label">Tên Dự Án</label>
+                            <input
+                                type="text"
+                                id="projectName"
+                                name="name"
+                                class="form-control"
+                                placeholder="Tên đệm..."
+                            />
+                        </div>
+                        <div class="col mb-3">
+                            <label for="customer" class="form-label"> Khách Hàng</label>
+
+                            <select
+                                class="form-select"
+                                id="customer"
+                                aria-label="Default select example"
+                            >
+                                <option selected>Chọn khách hàng</option>
+                                <option value="1">Warrent Buffet</option>
+                                <option value="2">Bingate</option>
+                                <option value="3">Donal Trump</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="dev" class="form-label">Devoloper</label>
+                            <div>
+                                <select id="dev" class="selectpicker" multiple>
+                                    <option value="1">Ronaldo</option>
+                                    <option value="2">Messi</option>
+                                    <option value="3">Pogba</option>
+                                    <option value="4">Rooney</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col mb-3">
+                            <label for="customer" class="form-label">Trạng thái</label>
+
+                            <select
+                                class="form-select"
+                                id="customer"
+                                aria-label="Default select example"
+                            >
+                                <option selected>Chọn trạng thái</option>
+                                <option value="1">Đang phát triển</option>
+                                <option value="2">Đã lên lịch</option>
+                                <option value="3">Đang chờ</option>
+                                <option value="3">Đã hoàn thành</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Đóng
+                    </button>
+                    <button type="submit" class="btn btn-success">Thêm</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    window.onload = (event) => {
+        var exampleModal = document.getElementById('projectModal2')
+
+        exampleModal.addEventListener('show.bs.modal', function (event) {
+            var inputId = exampleModal.querySelector('#userId')
+            var button = event.relatedTarget
+            var projectname = button.getAttribute('data-bs-projectname')
+
+            var modalTitle = exampleModal.querySelector('.edit-title')
+
+            modalTitle.textContent = 'Sửa dự án : ' + projectname
+        })
+    }
+</script>

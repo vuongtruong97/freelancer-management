@@ -1,0 +1,289 @@
+<div class="card">
+    <h3 class="card-header">Danh sách nhân viên</h3>
+
+    <div class="table-responsive text-nowrap">
+        <div class="p-4">
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#addStaffModal"
+            >
+                Thêm nhân viên
+            </button>
+        </div>
+
+        <table class="table col-md-8">
+            <thead>
+                <tr>
+                    <th>Tên</th>
+                    <th>Liên lạc</th>
+                    <th>Số điện thoại</th>
+                    <th>Vai trò</th>
+                    <th>Trạng Thái</th>
+                    <th>Chỉnh sửa</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                <% data.forEach(function(item) { %>
+                <tr>
+                    <td>
+                        <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                        <strong><%= item.fullName? item.fullName:item.firtName %></strong>
+                    </td>
+                    <td><%=item.email ? item.email:'-' %></td>
+                    <td><%=item.phone? item.phone:'-' %></td>
+                    <td>
+                        <span class="badge bg-label-<%= item.color %> me-1"
+                            ><%= item.roleName %></span
+                        >
+                    </td>
+                    <td>
+                        <span class="badge bg-label-<%=item.statusColor %> me-1"
+                            ><%=item.status%></span
+                        >
+                    </td>
+                    <td>
+                        <button
+                            class="dropdown-item text-danger"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editModal"
+                            data-bs-whatever="<%=item.fullName%>"
+                            data-bs-id="<%=item.id%>"
+                        >
+                            <i class="bx bx-edit-alt me-1"></i> Sửa
+                        </button>
+                    </td>
+                </tr>
+                <%})%>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MODAL ADD EMPLOYEE -->
+<div class="modal fade" id="addStaffModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <form action="/add-employee" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title text-primary" id="exampleModalLabel4">
+                        Thêm nhân viên
+                    </h3>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="firstName" class="form-label">Tên Đệm</label>
+                            <input
+                                type="text"
+                                id="firstName"
+                                name="firstName"
+                                class="form-control"
+                                placeholder="Tên đệm..."
+                            />
+                        </div>
+                        <div class="col mb-3">
+                            <label for="nameExLarge2" class="form-label">Tên</label>
+                            <input
+                                type="text"
+                                id="nameExLarge2"
+                                name="lastName"
+                                class="form-control"
+                                placeholder="Tên..."
+                            />
+                        </div>
+                        <div class="col mb-3">
+                            <label for="nameExLarge3" class="form-label"
+                                >Tên Đầy Đủ</label
+                            >
+                            <input
+                                type="text"
+                                id="nameExLarge3"
+                                name="fullName"
+                                class="form-control"
+                                placeholder="Họ và tên"
+                            />
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col mb-0">
+                            <label for="emailExLarge" class="form-label">Email</label>
+                            <input
+                                required
+                                type="email"
+                                id="emailExLarge"
+                                name="email"
+                                class="form-control"
+                                placeholder="xxxx@xxx.xx"
+                            />
+                        </div>
+                        <div class="col mb-0">
+                            <label for="password" class="form-label">Mật khẩu</label>
+                            <input
+                                disabled
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Mật khẩu"
+                            />
+                        </div>
+                        <div class="col mb-0">
+                            <label for="role2" class="form-label">Vai trò</label>
+                            <select required name="role2" id="role2" class="form-select">
+                                <option>--Chọn--</option>
+                                <option value="FE_DEV">FRONTEND-DEV</option>
+                                <option value="BE_DEV">BACKEND-DEV</option>
+                                <option value="DESIGNER">DESIGNER</option>
+                                <option value="MANAGER">MANAGER</option>
+                                <option value="FULLSTACK">FULLSTACK</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row g-2 pt-2">
+                        <div class="col mb-0">
+                            <label for="avatar" class="form-label">Ảnh đại diện</label>
+                            <input
+                                disabled
+                                type="file"
+                                id="avatar"
+                                name="avatar"
+                                class="form-control"
+                            />
+                        </div>
+                        <div class="col mb-0">
+                            <label for="address" class="form-label">Địa chỉ</label>
+                            <input
+                                type="text"
+                                id="address"
+                                name="address"
+                                class="form-control"
+                                placeholder="Ha noi - Viet Nam"
+                            />
+                        </div>
+                        <div class="col mb-0">
+                            <label for="dateofbirth" class="form-label">Ngày sinh</label>
+                            <input
+                                type="date"
+                                id="dateofbirth"
+                                name="birthday"
+                                class="form-control"
+                                placeholder="xxxx@xxx.xx"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Đóng
+                    </button>
+                    <button type="submit" class="btn btn-success">Thêm</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div
+    class="modal fade"
+    id="editModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/update-role-status" method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Sửa thông tin</h5>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input name="id" type="hidden" id="userId" />
+                        <label for="recipient-name" class="col-form-label"
+                            >Vai trò:</label
+                        >
+                        <select
+                            name="role"
+                            id="role"
+                            class="form-select"
+                            aria-label="Default select example"
+                        >
+                            <option disabled selected>--Chọn--</option>
+                            <option value="FE_DEV">FRONTEND-DEV</option>
+                            <option value="BE_DEV">BACKEND-DEV</option>
+                            <option value="DESIGNER">DESIGNER</option>
+                            <option value="MANAGER">MANAGER</option>
+                            <option value="FULLSTACK">FULLSTACK</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label"
+                            >Trạng thái</label
+                        >
+                        <select
+                            name="status"
+                            id="status"
+                            class="form-select"
+                            aria-label="Default select example"
+                        >
+                            <option disabled selected>--Chọn--</option>
+                            <option value="ACTIVE">HOẠT ĐỘNG</option>
+                            <option value="INACTIVE">KHOÁ</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Đóng
+                    </button>
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = (event) => {
+        var exampleModal = document.getElementById('editModal')
+
+        exampleModal.addEventListener('show.bs.modal', function (event) {
+            var inputId = exampleModal.querySelector('#userId')
+            var button = event.relatedTarget
+            var recipient = button.getAttribute('data-bs-whatever')
+            var id = button.getAttribute('data-bs-id')
+
+            inputId.value = id
+
+            console.log(id)
+
+            var modalTitle = exampleModal.querySelector('.modal-title')
+
+            modalTitle.textContent = 'Sửa thông tin: ' + recipient
+        })
+    }
+</script>
